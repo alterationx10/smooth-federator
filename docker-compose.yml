@@ -1,0 +1,19 @@
+version: '2'
+services:  
+  upstream:
+    build: ./Upstream/
+    hostname: upstream
+    environment:
+      - RABBITMQ_ERLANG_COOKIE="SUPERSECRETCOOKIE"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  
+  web:
+    build: ./FrontEnd
+    environment:
+      - RABBITMQ_ERLANG_COOKIE="SUPERSECRETCOOKIE"
+    links:
+      - upstream
+    depends_on:
+      - upstream
